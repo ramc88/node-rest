@@ -3,27 +3,44 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var fs = require('fs');
+var compress = require('compression');
+var cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// READ config and set global
+var conf = JSON.parse(fs.readFileSync('./config.json', 'utf8'))[process.env.NODE_ENV || 'development'];
+console.log(conf);
+
+global.__base = __dirname + '/';
+global.conf = conf;
+
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+var corsOptions = {
+  methods: 'GET,PUT,POST,DELETE,OPTIONS',
+  origin: '*',
+  allowedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization'],
+  exposedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization']
+};
 
+app.use(cors(corsOptions));
+
+app.use(compress());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Add routes
+fs.readdirSync('./routes/').forEach(function(file) {
+  var routeName = file.split(".")[0];
+  var route = './routes/' + file;
+  app.use('/' + routeName, require(route));
+});
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   next(createError(404));
 });
 
@@ -37,5 +54,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+*/
+var server = app.listen(3000);
 
 module.exports = app;
