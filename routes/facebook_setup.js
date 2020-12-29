@@ -55,4 +55,64 @@ router.get('/interests/', function(req, res, next) {
   })
 });
 
+router.get('/lifeEvents/', function(req, res, next) {
+  
+  var access_token = 'EAAB2i4QKEp0BACsMRCfxV2ul45X291SocBPOYaXGxeGaqsrWl4La2ByRPn1ZArr1ZCQZCnzwe9WMRqvrvuzEI9W7PIMwkP1h2khaT82XerAV0roOoqZAaqDDfcThFre7ZCTYYcLrZCeNK3SHcUFVxN7lX1WoqmsfZAkTn1zURkqZCwZDZD';
+  
+  var query = req.query && req.query['q'] ? req.query['q']:'';
+  facebookSetupController.getFacebookLifeEvents(access_token,query)
+  .then((result)=>{
+    res.send(result);
+  })
+  .catch((err) =>{
+    console.log(err);
+    next();
+  })
+});
+
+router.get('/industries/', function(req, res, next) {
+  
+  var access_token = 'EAAB2i4QKEp0BACsMRCfxV2ul45X291SocBPOYaXGxeGaqsrWl4La2ByRPn1ZArr1ZCQZCnzwe9WMRqvrvuzEI9W7PIMwkP1h2khaT82XerAV0roOoqZAaqDDfcThFre7ZCTYYcLrZCeNK3SHcUFVxN7lX1WoqmsfZAkTn1zURkqZCwZDZD';
+  
+  var query = req.query && req.query['q'] ? req.query['q']:'';
+  facebookSetupController.getFacebookIndustries(access_token,query)
+  .then((result)=>{
+    res.send(result);
+  })
+  .catch((err) =>{
+    console.log(err);
+    next();
+  })
+});
+
+router.get('/familyStatus/', function(req, res, next) {
+  
+  var access_token = 'EAAB2i4QKEp0BACsMRCfxV2ul45X291SocBPOYaXGxeGaqsrWl4La2ByRPn1ZArr1ZCQZCnzwe9WMRqvrvuzEI9W7PIMwkP1h2khaT82XerAV0roOoqZAaqDDfcThFre7ZCTYYcLrZCeNK3SHcUFVxN7lX1WoqmsfZAkTn1zURkqZCwZDZD';
+  
+  var query = req.query && req.query['q'] ? req.query['q']:'';
+  facebookSetupController.getFacebookFamilyStatus(access_token,query)
+  .then((result)=>{
+    res.send(result);
+  })
+  .catch((err) =>{
+    console.log(err);
+    next();
+  })
+});
+
+router.get('/userDevices/', function(req, res, next) {
+  
+  var access_token = 'EAAB2i4QKEp0BACsMRCfxV2ul45X291SocBPOYaXGxeGaqsrWl4La2ByRPn1ZArr1ZCQZCnzwe9WMRqvrvuzEI9W7PIMwkP1h2khaT82XerAV0roOoqZAaqDDfcThFre7ZCTYYcLrZCeNK3SHcUFVxN7lX1WoqmsfZAkTn1zURkqZCwZDZD';
+  
+  var query = req.query && req.query['q'] ? req.query['q']:'';
+  facebookSetupController.getFacebookUserDevices(access_token,query)
+  .then((result)=>{
+    res.send(result);
+  })
+  .catch((err) =>{
+    console.log(err);
+    next();
+  })
+});
+
 module.exports = router;
