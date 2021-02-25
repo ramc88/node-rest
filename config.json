@@ -1,5 +1,6 @@
 {
   "development":{  
-    "FACEBOOK_SEARCH_BASE_URL" : "https://graph.facebook.com/v9.0"
+    "FACEBOOK_SEARCH_BASE_URL" : "https://graph.facebook.com/v9.0",
+    "batchSize": 1
   }
 }

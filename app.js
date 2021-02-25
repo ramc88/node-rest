@@ -14,6 +14,9 @@ console.log(conf);
 global.__base = __dirname + '/';
 global.conf = conf;
 
+// START WORKER
+const jobWorker = require('./controllers/worker');
+jobWorker.start(app);
 
 var app = express();
 
