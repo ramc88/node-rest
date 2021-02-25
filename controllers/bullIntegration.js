@@ -3,7 +3,7 @@
 const { setQueues } = require('bull-board');
 const Queue = require('bull');
 
-const jobs = new Queue('jobs', kona.conf.redis);
+const jobs = new Queue('jobs', conf.redis);
 
 const queuesList = {};
 

@@ -1,11 +1,11 @@
 const bullInt = require('./bullIntegration');
-
+const Queue = require('bull');
 
 
 exports.start = async (app) => {
-    const jobs = new Queue('jobs', kona.conf.redis);
+    const jobs = new Queue('jobs', conf.redis);
 
-    jobs.process(kona.conf.batchSize, async (job) => {
+    jobs.process(conf.batchSize, async (job) => {
         if (job.attemptsMade === 2) {
           job.data.log = job.failedReason;
           job.data.processing_status = 2;
