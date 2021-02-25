@@ -1,0 +1,25 @@
+alpha-2,NAME,KEY,NAME_CITY,NAME_REGION,region_id
+AR,Argentina,83693,Buenos Aires,Ciudad Autónoma de Buenos Aires,103
+BR,Brasil,259014,Manaos,Amazonas,441
+BR,Brasil,269969,São Paulo,São Paulo (state),460
+BR,Brasil,245039,Boa Vista,Roraima,458
+BO,Bolivia,234370,La Paz,La Paz Department,432
+CL,Chile,328660,Santiago de Chile,Santiago Metropolitan Region,673
+CO,Colombia,458130,Bogotá,Distrito Especial,747
+CO,Colombia,461869,Cúcuta,Norte de Santander,734
+CR,Costa Rica,484027,San José,San José Province,758
+DO,República Dominicana,627482,Santo Domingo,Distrito Nacional,874
+EC,Ecuador,644431,Quito,Pichincha Province,964
+SV,El Salvador,2201941,San Salvador,San Salvador Department,3489
+GT,Guatemala,882407,Ciudad de Guatemala,Guatemala Department,1538
+HN,Honduras,905082,Tegucigalpa,Francisco Morazán Department,1580
+HT,Haití,926887,Puerto Príncipe,Ouest Department,1618
+MX,México,2673660,Ciudad de México,Distrito Federal,2513
+NI,Nicaragua,1646894,Managua,Managua Department,2653
+PA,Panamá,1681417,Panamá (ciudad),Panamá Province,2754
+PE,Perú,1696855,Lima,Lima Region,2771
+PR,Puerto Rico,2515532,San Juan (Puerto Rico),San Juan,4281
+PY,Paraguay,1903658,Asunción,Asunción,4286
+TT,Trinidad y Tobago,2340825,Puerto España,Port of Spain,3741
+UY,Uruguay,2549997,Montevideo,Montevideo Department,3903
+VE,Venezuela,2558673,Caracas,Capital District,3956
