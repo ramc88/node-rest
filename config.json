@@ -1,6 +1,11 @@
 {
   "development":{  
     "FACEBOOK_SEARCH_BASE_URL" : "https://graph.facebook.com/v9.0",
-    "batchSize": 1
+    "batchSize": 1,
+    "db": {
+      "mongo": {
+        "url": "mongodb+srv://admin:KONA2021@fing.wmkyk.mongodb.net/proyect_demog?retryWrites=true&w=majority"
+      }
+    }
   }
 }

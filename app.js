@@ -6,6 +6,8 @@ var logger = require('morgan');
 var fs = require('fs');
 var compress = require('compression');
 var cors = require('cors');
+const mongoose = require('mongoose');
+
 
 // READ config and set global
 var conf = JSON.parse(fs.readFileSync('./config.json', 'utf8'))[process.env.NODE_ENV || 'development'];
@@ -13,6 +15,30 @@ console.log(conf);
 
 global.__base = __dirname + '/';
 global.conf = conf;
+
+// START DATABASE
+const url = process.env.MONGO || conf.db.mongo.url;
+
+mongoose.connect(
+  url,
+  {
+    autoIndex: false,
+    auto_reconnect: true,
+    useNewUrlParser: true,
+  },
+);
+
+mongoose.connection.on('error', (err) => {
+  console.error(err);
+});
+
+mongoose.set('useFindAndModify', false);
+mongoose.set('debug', false);
+
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose default connection open');
+});
+
 
 // START WORKER
 const jobWorker = require('./controllers/worker');
@@ -36,7 +62,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Add routes
-fs.readdirSync('./routes/').forEach(function(file) {
+fs.readdirSync('./routes/').forEach(function (file) {
   var routeName = file.split(".")[0];
   var route = './routes/' + file;
   app.use('/' + routeName, require(route));
