@@ -1,4 +1,3 @@
-
 const startup = require('./startup');
 startup.config();
 startup.sentry();
@@ -20,3 +19,4 @@ process.on('SIGINT', happyEnding);
 process.on('SIGTERM', happyEnding);
 process.on('uncaughtException', sadEnding);
 process.on('unhandledRejection', sadEnding);
+
