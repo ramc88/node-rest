@@ -1,5 +1,13 @@
 {
   "development":{  
-    "FACEBOOK_SEARCH_BASE_URL" : "https://graph.facebook.com/v9.0"
+    "FACEBOOK_SEARCH_BASE_URL" : "https://graph.facebook.com/v9.0",
+    "db":{"mongo":{"url":"mongodb://root:demography@0.0.0.0:27018/admin"}},
+    "raven" : "https://831543decd5c4844861f0c91e1828a11@o547041.ingest.sentry.io/5669169",
+    "secret" : "proyecto_grado2021",
+    "mainUser" : {
+      "name" : "Admin",
+      "email" : "admin@demography.edu.uy",
+      "password" : "demography"
+    }
   }
 }

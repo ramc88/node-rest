@@ -10,6 +10,8 @@ function getFacebookGeolocation(facebook_token,location_type,query) {
     request.get(options, (err, response, body) => {
       if (err || !response || response.statusCode !== 200) {
         console.log(err);
+        console.log(response.statusCode);
+        console.log(body);
          return reject();
       }
       var result = JSON.parse(body);
