@@ -5,7 +5,10 @@ function upsertMainUser() {
   const user = {
     name: global.config.mainUser.name,
     email: global.config.mainUser.email,
-    password: login.hashIt(global.config.mainUser.password)
+    password: login.hashIt(global.config.mainUser.password),
+    roles: [
+      "ADMIN"
+    ] 
   };
 
   User

@@ -22,6 +22,9 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  roles: [{
+    type: String,
+  }],
 
   _createdAt: {
     type: Date,

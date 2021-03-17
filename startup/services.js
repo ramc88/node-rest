@@ -13,8 +13,8 @@ function init() {
   const server = http.Server(app);
 
   // START WORKER
-  const jobWorker = require('../controllers/worker');
-  jobWorker.start(app);
+  //const jobWorker = require('../controllers/worker');
+  //jobWorker.start(app);
 
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
