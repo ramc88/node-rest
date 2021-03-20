@@ -1,0 +1,25 @@
+version: 1
+services:
+  backend:
+    container_name: digital-demography-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: digital-demography-backend
+    restart: always
+    cpus: 2
+    mem_limit: 4000
+    #env_file:
+      #- location
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+  
+  redis:
+    image: "redis:alpine"
+    networks:
+      - backend
+
+networks:
+  backend:
