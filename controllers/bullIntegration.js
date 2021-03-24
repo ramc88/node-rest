@@ -25,7 +25,7 @@ exports.addToQueue = async (queueName, data, opts) => {
 exports.addToQueueBulk = async (queueName, dataList) => {
   console.log('line 28 bull', queueName);
   if (queuesList[queueName]) {
-    console.log('line 20 bull');
+    console.log('line 20 bull', dataList);
     // eslint-disable-next-line max-len
     await queuesList[queueName].addBulk(dataList);
   } else {

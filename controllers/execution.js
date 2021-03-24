@@ -5,7 +5,7 @@ const create = async (body) => {
 
     try {
         const newPr = new Execution(body)
-        const result = await newPr.save()
+        const result = await newPr.save();
         return result;
     } catch (e) {
         console.log('Error creating Execution: ', e);

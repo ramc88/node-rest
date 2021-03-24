@@ -16,7 +16,10 @@ const Project = new Schema({
   status: {
       type: Schema.Types.String,
   },
-  executions: [{type: ObjectId, ref: 'execution'}],
+
+  fbTokens: [{type: Schema.Types.String}],
+
+  config: [{type: Schema.Types.String}],
  
   description: {
       type: Schema.Types.String,

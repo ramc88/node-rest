@@ -58,4 +58,22 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.post('/runProject/:id', async (req, res) => {
+  try {
+    res.send(ctrl.runProject(req.params.id));
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+
+router.post('/createExecutions/:id', async (req, res) => {
+  try {
+    res.send(ctrl.createExecutions(req.params.id));
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+})
+
 module.exports = router;

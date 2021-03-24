@@ -1,6 +1,8 @@
 const Project = require('../models/projects');
 const cronRegex = "^((((\d+,)+\d+|(\d+(\/|-|#)\d+)|\d+L?|\*(\/\d+)?|L(-\d+)?|\?|[A-Z]{3}(-[A-Z]{3})?) ?){5,7})$|(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)"
-
+const execCtrl = require('../controllers/execution');
+const bullInt = require('../controllers/bullIntegration');
+const mongoose = require('mongoose');
 
 const create = async (body) => {
 
@@ -77,6 +79,34 @@ const deleteById = async (id) => {
 
 }
 
+const createExecutions = async (id) => {
+    try {
+        const project = await Project.findById(id);
+        console.log('Project', project);
+        return project.config.map(async (value) => await execCtrl.create({status: 'initial', config: await loadConfig(value), projectId: mongoose.Types.ObjectId(id)}));
+    } catch (e) {
+        console.log('Error creating executions: ', e);
+        return ({ error: e });
+    }
+};
+
+const runProject = async (id) => {
+    try {
+        const executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
+        console.log('Executions: ', executions);
+        bullInt.addToQueueBulk('jobs', executions);
+        return {};
+    } catch (e) {
+        console.log('Error running project: ', e);
+        return ({ error: e });
+    };
+}
+
+const loadConfig = async (config) => {
+    // TO DO
+    return config;
+};
+
 module.exports = {
     create,
     getAll,
@@ -84,5 +114,7 @@ module.exports = {
     getByW,
     getAllByW,
     update,
-    deleteById
+    deleteById,
+    createExecutions,
+    runProject
 };

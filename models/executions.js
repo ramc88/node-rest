@@ -1,10 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Schema, ObjectId } = mongoose;
 
 const Execution = new Schema({
   status: {
       type: Schema.Types.String,
+  },
+  config: {
+    type: Schema.Types.String
+  },
+  projectId: {
+    type: ObjectId, ref: 'projects'
   }
 },
 {
