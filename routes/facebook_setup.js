@@ -7,7 +7,20 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource2');
 });
 
-router.get('/geolocation/', function(req, res, next) {
+router.get('/catalog',function(req,res,next){
+  var type = req.query['type'];
+
+  facebookSetupController.getFacebookCatalog(type)
+  .then((result)=>{
+    res.send(result);
+  })
+  .catch((err) =>{
+    console.log(err);
+    next();
+  })
+});
+
+/*router.get('/geolocation/', function(req, res, next) {
   
   var type = req.query['geolocation_type'];
   var query = req.query['q'] ? req.query['q']:'';
@@ -113,6 +126,6 @@ router.get('/userDevices/', function(req, res, next) {
     console.log(err);
     next();
   })
-});
+});*/
 
 module.exports = router;

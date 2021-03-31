@@ -1,4 +1,21 @@
 const request = require('request');
+const FacebookCatalog = require('../models/facebook_catalog');
+
+function getFacebookCatalog(type) {
+  return new Promise((resolve, reject) => {
+    FacebookCatalog
+    .where({type})
+    .sort({})
+    .findOne()
+    .exec((err, result) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(result);
+    });
+  });
+  
+}
 
 function getFacebookGeolocation(facebook_token,location_type,query) { 
 
@@ -181,6 +198,8 @@ module.exports = {
   getFacebookLifeEvents,
   getFacebookIndustries,
   getFacebookFamilyStatus,
-  getFacebookUserDevices
+  getFacebookUserDevices,
+
+  getFacebookCatalog
 
 }

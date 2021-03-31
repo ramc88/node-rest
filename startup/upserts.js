@@ -1,5 +1,7 @@
 const login = require('../lib/login');
 const User = require('../models/user');
+const countries = require('./upsertFacebookCatalogs/countries');
+const expats = require('./upsertFacebookCatalogs/expats');
 
 function upsertMainUser() {
   const user = {
@@ -17,13 +19,20 @@ function upsertMainUser() {
       if (err) {
         console.log(err);
       }
-      console.log('Usuario Admin Creado');
+      else {
+        console.log('Usuario Admin Creado');
+      }
+      
       
     });
 }
 
+
+
 function init() { 
   upsertMainUser();
+  countries.upsertCountries();
+  expats.upsertExpats();
 }
 
 module.exports = {
