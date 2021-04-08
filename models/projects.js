@@ -16,15 +16,13 @@ const Project = new Schema({
   status: {
       type: Schema.Types.String,
   },
-
-  fbTokens: [{type: Schema.Types.String}],
-
-  config: [{type: Schema.Types.String}],
- 
+  
+  config: {type: Object}, 
+  
   description: {
       type: Schema.Types.String,
   },
-  cron: {
+  recurrence: {
       type: Schema.Types.String,
   },
   params: {

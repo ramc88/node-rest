@@ -5,7 +5,10 @@ const ctrl = require('../controllers/project');
 router.post('/', async (req, res) => {
   try {
     const item = await ctrl.create(req.body);
-    res.send(item);
+    if(item && item.error)
+    res.status(400).send(item);
+    else
+      res.send(item);
   } catch (e) {
     console.log(e);
     res.status(400).send(e);

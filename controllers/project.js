@@ -9,10 +9,9 @@ const create = async (body) => {
     try {
         if (!body.name) return { error: 'field name missing' };
         if (!body.type) return { error: 'field type missing' };
-        if (!body.status) return { error: 'field status missing' };
         if (!body.description) return { error: 'field description missing' };
-        if (!body.cron) return { error: 'field cron missing' };
-
+        if (!body.recurrence) return { error: 'field cron missing' };
+        if (!body.config) return { error: 'field config is missing' };
 
         const newPr = new Project(body)
         const result = await newPr.save()
