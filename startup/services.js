@@ -7,7 +7,6 @@ const http = require('http');
 const KRequest = require('k-request');
 const helmet = require('helmet');
 const mongooseMorgan = require('k-mongoose-morgan');
-const arenaConfig = require('../controllers/arenaConfig');
 
 function init() {
   const app = express();
@@ -52,7 +51,7 @@ function init() {
    // TODO middlewares
   app.use(require('../middlewares/auth'));
 
-  app.use('/bullMonitor', arenaConfig);
+  app.use('/bullMonitor', require('../controllers/arenaConfig').arena);
 
   fs.readdirSync(`${__dirname}/../routes/`).forEach(function(file) {
     var routeName = file.split(".")[0];

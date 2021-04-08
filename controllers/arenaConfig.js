@@ -2,7 +2,7 @@ const Arena = require('bull-arena');
 const Bull = require('bull');
 const bullQueues = require('./bullIntegration');
 
-const allQueues = bullIntegration.queuesList.keys();
+const allQueues = Object.keys(bullQueues.queuesList);
 
 const allQueuesConfig = allQueues.map((val) => {
     return {
@@ -14,7 +14,11 @@ const allQueuesConfig = allQueues.map((val) => {
     };
 });
 
-Arena({
+const arena = Arena({
   Bull,
   queues: allQueuesConfig,
 });
+
+module.exports = {
+    arena,
+};
