@@ -109,7 +109,7 @@ const createExecutions = async (id) => {
     try {
         const project = await Project.findById(id);
         console.log('Project', project);
-        return project.config.map(async (value) => await execCtrl.create({status: 'initial', config: await loadConfig(value), projectId: mongoose.Types.ObjectId(id)}));
+        return project.jsonConfig.map(async (value) => await execCtrl.create({status: 'initial', config: value, projectId: mongoose.Types.ObjectId(id)}));
     } catch (e) {
         console.log('Error creating executions: ', e);
         return ({ error: e });
@@ -118,20 +118,16 @@ const createExecutions = async (id) => {
 
 const runProject = async (id) => {
     try {
-        const executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
+        let executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
         console.log('Executions: ', executions);
-        bullInt.addToQueueBulk('jobs', executions);
+        executions = executions.map((val) => { return { name: val._id, data: val } });
+        await bullInt.addToQueueBulk('works', executions);
         return {};
     } catch (e) {
         console.log('Error running project: ', e);
         return ({ error: e });
     };
 }
-
-const loadConfig = async (config) => {
-    // TO DO
-    return config;
-};
 
 module.exports = {
     create,

@@ -1,11 +1,14 @@
 const bullInt = require('./bullIntegration');
 const Queue = require('bull');
-
+const fbApiJob = require('./jobs/fbApi');
 
 exports.start = async (app) => {
-    const jobs = new Queue('jobs', config.redis);
+  try {
+    console.log('starting worker', global.config.redis)
+    const jobs = new Queue('works', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}});
 
-    jobs.process(config.batchSize, async (job) => {
+    jobs.process(global.config.batchSize, async (job) => {
+      console.log('-----------PROCESSING JOB-----------', job);
         if (job.attemptsMade === 2) {
           job.data.log = job.failedReason;
           job.data.processing_status = 2;
@@ -14,9 +17,11 @@ exports.start = async (app) => {
           await job.remove();
         } else {
           // eslint-disable-next-line no-undef
-          // DO SOMETHING, JOB LOGIC GOES HERE
-          // los jobs son: (Project.config[i], require('./jobs/*').name) 
-        }
+          await fbApiJob.job(job.data.config);
+        };
       });
+    } catch (e) {
+      console.log(e)
+    }
 }
 

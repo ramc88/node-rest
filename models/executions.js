@@ -7,7 +7,7 @@ const Execution = new Schema({
       type: Schema.Types.String,
   },
   config: {
-    type: Schema.Types.String
+    type: Object
   },
   projectId: {
     type: ObjectId, ref: 'projects'

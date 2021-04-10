@@ -11,10 +11,9 @@ const mongooseMorgan = require('k-mongoose-morgan');
 function init() {
   const app = express();
   const server = http.Server(app);
-
-  // START WORKER
-  //const jobWorker = require('../controllers/worker');
-  //jobWorker.start(app);
+// START WORKER
+const jobWorker = require('./controllers/worker');
+jobWorker.start();
 
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
@@ -65,6 +64,7 @@ function init() {
     }
     console.log(`listening on port ${process.env.PORT || 4000}`);
   });
+
 }
 
 module.exports = {

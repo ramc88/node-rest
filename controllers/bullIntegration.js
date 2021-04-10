@@ -3,11 +3,11 @@
 const { setQueues } = require('bull-board');
 const Queue = require('bull');
 
-const jobs = new Queue('jobs', global.config.redis);
+const works = new Queue('works', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}})
 
 const queuesList = {};
 
-queuesList.jobs = jobs;
+queuesList.works = works;
 
 exports.queuesList = queuesList;
 
