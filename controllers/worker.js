@@ -15,7 +15,7 @@ exports.start = async (app) => {
         } else {
           // eslint-disable-next-line no-undef
           // DO SOMETHING, JOB LOGIC GOES HERE
-          
+          // los jobs son: (Project.config[i], require('./jobs/*').name) 
         }
       });
 }

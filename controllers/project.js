@@ -3,6 +3,7 @@ const cronRegex = "^((((\d+,)+\d+|(\d+(\/|-|#)\d+)|\d+L?|\*(\/\d+)?|L(-\d+)?|\?|
 const execCtrl = require('../controllers/execution');
 const bullInt = require('../controllers/bullIntegration');
 const mongoose = require('mongoose');
+const utils = require('../lib/utils');
 
 const create = async (body) => {
 
@@ -13,8 +14,34 @@ const create = async (body) => {
         if (!body.recurrence) return { error: 'field cron missing' };
         if (!body.config) return { error: 'field config is missing' };
 
-        const newPr = new Project(body)
-        const result = await newPr.save()
+        const combinations = utils.combinations(Object.values(body.config.config), Object.keys(body.config.config));
+
+        const jsonConfig = combinations.reduce((acc, combination) => {
+            const homeType = combination.homes.country ? 'countries' : 'cities';
+            return acc.concat([{ 
+                age_min: combination.ageRanges?.minAge,
+                age_max: combination.ageRanges?.maxAge,
+                genders: [combination.sexs.id],
+                geo_locations: {
+                    [homeType]: [{
+                        key: combination.homes.country ? combination.homes.country.key : combination.homes.city.key,
+                    }],
+                    location_types: [combination.homes.location_type]
+                },
+                facebook_positions: ["feed", "instant_article", "instream_video", "marketplace"],
+                device_platforms: ["mobile","desktop"],
+                publisher_platforms:["facebook","messenger"],
+                messenger_positions:["messenger_home"],
+                flexible_spec: [{
+                    id: combination.expats.id,
+                    name: combination.expats.name
+                }]
+            }
+        ])}, []);
+
+        body.jsonConfig = jsonConfig;
+        const newPr = new Project(body);
+        const result = await newPr.save();
         return result;
     } catch (e) {
         console.log('Error creating Project: ', e);
