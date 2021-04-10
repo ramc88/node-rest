@@ -12,9 +12,11 @@ const job = async (config) => {
 
     try {
         const response = await axios(request);
-        console.log('AXIOS RESPONSE:: ', response);
+        console.log('AXIOS RESPONSE:: ', response.status, response.data);
+        return response.data;
     } catch (e) {
         console.log('AXIOS ERROR:: ', e);
+        return e
     }
 };
 

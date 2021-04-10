@@ -12,7 +12,7 @@ function init() {
   const app = express();
   const server = http.Server(app);
 // START WORKER
-const jobWorker = require('./controllers/worker');
+const jobWorker = require('../controllers/worker');
 jobWorker.start();
 
   // k-request

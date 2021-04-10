@@ -9,7 +9,8 @@ const allQueuesConfig = allQueues.map((val) => {
         name: val,
         hostId: "demography",
         redis: {
-            url: global.config.redis,
+            host: global.config.redis.split(':')[0],
+            port: global.config.redis.split(':')[1]
         },
     };
 });

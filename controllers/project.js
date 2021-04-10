@@ -18,30 +18,41 @@ const create = async (body) => {
 
         const jsonConfig = combinations.reduce((acc, combination) => {
             const homeType = combination.homes.country ? 'countries' : 'cities';
-            return acc.concat([{ 
+            const obj = { 
                 age_min: combination.ageRanges?.minAge,
                 age_max: combination.ageRanges?.maxAge,
                 genders: [combination.sexs.id],
-                geo_locations: {
-                    [homeType]: [{
-                        key: combination.homes.country ? combination.homes.country.key : combination.homes.city.key,
-                    }],
-                    location_types: [combination.homes.location_type]
-                },
                 facebook_positions: ["feed", "instant_article", "instream_video", "marketplace"],
                 device_platforms: ["mobile","desktop"],
                 publisher_platforms:["facebook","messenger"],
                 messenger_positions:["messenger_home"],
                 flexible_spec: [{
-                    id: combination.expats.id,
-                    name: combination.expats.name
+                    behaviors: [{
+                        id: combination.expats.id,
+                        name: combination.expats.name
+                    }]
                 }]
+            };
+            if (combination.homes.country) {
+                obj.geo_locations = {
+                    [homeType]: [combination.homes.country.key],
+                    location_types: [combination.homes.location_type]
+                }
+            } else if (combination.homes.cities) {
+                obj.geo_locations = {
+                    [homeType]: [{
+                        key: combination.homes.city.key,
+                    }],
+                    location_types: [combination.homes.location_type]
+                }
             }
-        ])}, []);
+            return acc.concat([obj])
+        }, []);
 
         body.jsonConfig = jsonConfig;
         const newPr = new Project(body);
         const result = await newPr.save();
+        result.jsonConfig.map(async (value) => await execCtrl.create({status: 'initial', recurrence: result.recurrence, config: value, projectId: mongoose.Types.ObjectId(result._id)}));
         return result;
     } catch (e) {
         console.log('Error creating Project: ', e);
@@ -120,8 +131,7 @@ const runProject = async (id) => {
     try {
         let executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
         console.log('Executions: ', executions);
-        executions = executions.map((val) => { return { name: val._id, data: val } });
-        await bullInt.addToQueueBulk('works', executions);
+        executions = executions.map((val) => { return bullInt.addToQueue('works', val, {jobId: val._id, repeat: { cron: val.recurrence, limit: 3 }, removeOnComplete: false, removeOnFail: false})});
         return {};
     } catch (e) {
         console.log('Error running project: ', e);

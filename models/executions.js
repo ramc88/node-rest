@@ -9,6 +9,9 @@ const Execution = new Schema({
   config: {
     type: Object
   },
+  recurrence: {
+    type: Schema.Types.String,
+  },
   projectId: {
     type: ObjectId, ref: 'projects'
   }

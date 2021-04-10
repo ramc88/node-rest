@@ -23,16 +23,18 @@ exports.addToQueue = async (queueName, data, opts) => {
   if (queuesList[queueName]) return queuesList[queueName].add(data, jobOpts);
 };
 
-exports.addToQueueBulk = async (queueName, dataList) => {
-  console.log('line 28 bull', queueName);
-  if (queuesList[queueName]) {
-    console.log('line 20 bull', dataList);
-    // eslint-disable-next-line max-len
-    await queuesList[queueName].addBulk(dataList);
-  } else {
-    console.log('queue not found');
-  }
-};
+//NOT WORKING WITH SCHEDULE JOBS 
+//
+// exports.addToQueueBulk = async (queueName, dataList) => {
+//   console.log('line 28 bull', queueName);
+//   if (queuesList[queueName]) {
+//     console.log('line 20 bull', dataList);
+//     // eslint-disable-next-line max-len
+//     await queuesList[queueName].addBulk(dataList);
+//   } else {
+//     console.log('queue not found');
+//   }
+// };
 
 exports.removeFromQueue = async (queueName, jobId) => {
   if (queuesList[queueName]) {
