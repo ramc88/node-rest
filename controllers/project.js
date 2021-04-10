@@ -12,7 +12,7 @@ const create = async (body) => {
         if (!body.description) return { error: 'field description missing' };
         if (!body.recurrence) return { error: 'field cron missing' };
         if (!body.config) return { error: 'field config is missing' };
-
+        
         const newPr = new Project(body)
         const result = await newPr.save()
         return result;
@@ -24,7 +24,7 @@ const create = async (body) => {
 
 const getAll = async () => {
     try {
-        return await Project.find({})
+        return await Project.find({}).sort({_id:-1})
     } catch (e) {
         console.log('Error getting Projects: ', e);
         return ({ error: e });
