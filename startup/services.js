@@ -51,17 +51,19 @@ function init() {
    // TODO middlewares
   app.use(require('../middlewares/auth'));
 
+  app.use('/bullMonitor', require('../controllers/arenaConfig').arena);
+
   fs.readdirSync(`${__dirname}/../routes/`).forEach(function(file) {
     var routeName = file.split(".")[0];
     var route = '../routes/' + file;
     app.use('/' + routeName, require(route));
   });
 
-  server.listen(process.env.PORT || global.config.port, (err) => {
+  server.listen(process.env.PORT || 4000, (err) => {
     if (err) {
       throw err;
     }
-    console.log(`listening on port ${process.env.PORT || global.config.port}`);
+    console.log(`listening on port ${process.env.PORT || 4000}`);
   });
 }
 

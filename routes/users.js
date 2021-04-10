@@ -74,11 +74,11 @@ router.post('/login', function(req, res, next) {
       }
       // eslint-disable-next-line no-underscore-dangle
       if (!user || user.deletedAt) {
-        return res.sendStatus(400);
+        return res.status(400).send('wrong user or password');
       }
       
       if (login.hashIt(req.body.password) !== user.password) {
-        return res.sendStatus(400);
+        return res.status(400).send('wrong user or password');
       }
       
       return res.status(200).send({
