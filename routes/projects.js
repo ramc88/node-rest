@@ -6,7 +6,7 @@ router.post('/', async (req, res) => {
   try {
     const item = await ctrl.create(req.body);
     if(item && item.error)
-    res.status(400).send(item);
+      res.status(400).send(item);
     else
       res.send(item);
   } catch (e) {

@@ -51,7 +51,7 @@ const create = async (body) => {
 
 const getAll = async () => {
     try {
-        return await Project.find({})
+        return await Project.find({}).sort({_id:-1})
     } catch (e) {
         console.log('Error getting Projects: ', e);
         return ({ error: e });
