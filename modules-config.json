@@ -1,0 +1,14 @@
+{
+    "workerService": {
+        "enabled": true,
+        "dir": "worker"
+    },
+    "dbService": {
+        "enabled": false,
+        "dir": "db"
+    },
+    "coreService": {
+        "enabled": true,
+        "dir": "core"
+    }
+}

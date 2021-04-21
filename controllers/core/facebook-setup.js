@@ -1,5 +1,5 @@
 const request = require('request');
-const FacebookCatalog = require('../models/facebook_catalog');
+const FacebookCatalog = require('../../models/facebook_catalog');
 
 function getFacebookCatalog(type) {
   return new Promise((resolve, reject) => {

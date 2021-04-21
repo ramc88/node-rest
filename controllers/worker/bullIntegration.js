@@ -4,10 +4,12 @@ const { setQueues } = require('bull-board');
 const Queue = require('bull');
 
 const works = new Queue('works', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}})
+const dbInsert = new Queue('dbInsert', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}})
 
 const queuesList = {};
 
 queuesList.works = works;
+queuesList.dbInsert = dbInsert;
 
 exports.queuesList = queuesList;
 

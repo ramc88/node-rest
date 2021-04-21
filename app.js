@@ -1,9 +1,12 @@
 const startup = require('./startup');
+const modulesConfig = require('./modules-config.json');
+
 startup.config();
 startup.sentry();
-startup.db();
-startup.services();
-startup.upserts();
+if (modulesConfig.coreService.enabled) startup.mongo();
+if (modulesConfig.dbService.enabled) startup.mysql();
+startup.services(modulesConfig);
+if (modulesConfig.coreService.enabled) startup.upserts();
 
 function happyEnding() {
   process.exit(0);

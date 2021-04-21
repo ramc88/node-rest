@@ -8,26 +8,26 @@ const KRequest = require('k-request');
 const helmet = require('helmet');
 const mongooseMorgan = require('k-mongoose-morgan');
 
-function init() {
+function init(moduleConfig) {
   const app = express();
   const server = http.Server(app);
-// START WORKER
-const jobWorker = require('../controllers/worker');
-jobWorker.start();
+  // START WORKER
+  const jobWorker = require('../controllers/worker/worker');
+  jobWorker.start();
 
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
 
   // The request handler must be the first middleware on the app
   app.use(global.Raven.requestHandler());
-  
+
   var corsOptions = {
     methods: 'GET,PUT,POST,DELETE,OPTIONS',
     origin: '*',
     allowedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization'],
     exposedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization']
   };
-  
+
   app.use(cors(corsOptions));
 
   app.use(compress());
@@ -47,17 +47,28 @@ jobWorker.start();
     }),
   );
 
-   // TODO middlewares
+  // TODO middlewares
   app.use(require('../middlewares/auth'));
 
-  app.use('/bullMonitor', require('../controllers/arenaConfig').arena);
+  if (moduleConfig.workerService.enabled)
+    app.use('/bullMonitor', require('../controllers/worker/arenaConfig').arena);
 
-  fs.readdirSync(`${__dirname}/../routes/`).forEach(function(file) {
-    var routeName = file.split(".")[0];
-    var route = '../routes/' + file;
-    app.use('/' + routeName, require(route));
-  });
+  const serviceList = [];
+  Object.keys(moduleConfig).forEach( val => { if (moduleConfig[val].enabled) serviceList.push(moduleConfig[val].dir)});
+  console.log('SERVICE LIST[[=======', serviceList);
 
+  serviceList.forEach(dir => {
+    if (fs.readdirSync(`${__dirname}/../routes/`).indexOf(dir) !== -1){
+      fs.readdirSync(`${__dirname}/../routes/${dir}/`).forEach(function (file) {
+        var routeName = file.split(".")[0];
+        var route = `../routes/${dir}/${file}`;
+        console.log('==================', routeName);
+
+        app.use('/' + routeName, require(route));
+      });
+    };
+  })
+  
   server.listen(process.env.PORT || 4000, (err) => {
     if (err) {
       throw err;

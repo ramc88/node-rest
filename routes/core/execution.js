@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const ctrl = require('../controllers/execution');
+const ctrl = require('../../controllers/core/execution');
 
 
 router.post('/', async (req, res) => {

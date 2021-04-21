@@ -3,8 +3,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const crypto = require('crypto');
 const validator = require('is-my-json-valid');
 const Qs = require('qs');
-const User = require('../models/user');
-const login = require('../lib/login');
+const User = require('../../models/user');
+const login = require('../../lib/login');
 
 
 router.get('/', (req, res, next) => {

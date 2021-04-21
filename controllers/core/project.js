@@ -1,9 +1,9 @@
-const Project = require('../models/projects');
+const Project = require('../../models/projects');
 const cronRegex = "^((((\d+,)+\d+|(\d+(\/|-|#)\d+)|\d+L?|\*(\/\d+)?|L(-\d+)?|\?|[A-Z]{3}(-[A-Z]{3})?) ?){5,7})$|(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)"
-const execCtrl = require('../controllers/execution');
-const bullInt = require('../controllers/bullIntegration');
+const execCtrl = require('./execution');
+const bullInt = require('../../controllers/worker/bullIntegration');
 const mongoose = require('mongoose');
-const utils = require('../lib/utils');
+const utils = require('../../lib/utils');
 
 const create = async (body) => {
 
@@ -52,7 +52,7 @@ const create = async (body) => {
         body.jsonConfig = jsonConfig;
         const newPr = new Project(body);
         const result = await newPr.save();
-        result.jsonConfig.map(async (value) => await execCtrl.create({status: 'initial', recurrence: result.recurrence, config: value, projectId: mongoose.Types.ObjectId(result._id)}));
+        result.jsonConfig.map(async (value) => await execCtrl.create({status: 'initial', recurrence: result.recurrence, config: value, projectId: mongoose.Types.ObjectId(result._id), type: result.type}));
         return result;
     } catch (e) {
         console.log('Error creating Project: ', e);

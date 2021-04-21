@@ -12,6 +12,9 @@ const Execution = new Schema({
   recurrence: {
     type: Schema.Types.String,
   },
+  type: {
+    type: Schema.Types.String,
+  },
   projectId: {
     type: ObjectId, ref: 'projects'
   }

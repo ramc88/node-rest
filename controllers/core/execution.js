@@ -1,4 +1,4 @@
-const Execution = require('../models/executions');
+const Execution = require('../../models/executions');
 
 
 const create = async (body) => {
