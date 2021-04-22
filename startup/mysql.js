@@ -1,6 +1,7 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 function init() {
+    console.log('               CONNECTING TO MYSQL')
     const credentials = process.env.MYSQL ? JSON.parse(process.env.MYSQL) : undefined || global.config.db.mysql;
 
     // CREDENTIALS EXAMPLE
@@ -17,7 +18,7 @@ function init() {
 
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
-        console.log('The solution is: ', results[0].solution);
+        console.log('              ➪ connection established');
     });
 
     global.mySql = connection;
@@ -30,7 +31,7 @@ function init() {
 
     pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
-        console.log('The solution is: ', results[0].solution);
+        console.log('              ➪ pool opened');
     });
 
     global.mySqlPool = pool;

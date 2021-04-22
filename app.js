@@ -3,9 +3,9 @@ const modulesConfig = require('./modules-config.json');
 
 startup.config();
 startup.sentry();
+startup.services(modulesConfig);
 if (modulesConfig.coreService.enabled) startup.mongo();
 if (modulesConfig.dbService.enabled) startup.mysql();
-startup.services(modulesConfig);
 if (modulesConfig.coreService.enabled) startup.upserts();
 
 function happyEnding() {

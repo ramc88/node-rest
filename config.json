@@ -6,10 +6,11 @@
         "url": "mongodb+srv://admin:KONA2021@fing.wmkyk.mongodb.net/proyect_demog?retryWrites=true&w=majority"
       },
       "mysql": {
-        "host": "localhost",
-        "user": "admin",
-        "password": "admin",
-        "database": "db"
+        "host": "dev.konapp.com",
+        "user": "root",
+        "password": "demography",
+        "database": "demography",
+        "port": 27047
       }
     },
     "raven": "https://831543decd5c4844861f0c91e1828a11@o547041.ingest.sentry.io/5669169",

@@ -11,10 +11,12 @@ const mongooseMorgan = require('k-mongoose-morgan');
 function init(moduleConfig) {
   const app = express();
   const server = http.Server(app);
-  // START WORKER
-  const jobWorker = require('../controllers/worker/worker');
-  jobWorker.start();
 
+  // START WORKER
+  if (moduleConfig.workerService.enabled) {
+    const jobWorker = require('../controllers/worker/worker');
+    jobWorker.start();
+  }
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
 
@@ -55,15 +57,19 @@ function init(moduleConfig) {
 
   const serviceList = [];
   Object.keys(moduleConfig).forEach( val => { if (moduleConfig[val].enabled) serviceList.push(moduleConfig[val].dir)});
-  console.log('SERVICE LIST[[=======', serviceList);
+  console.log('\n\n\n========================================');
+  console.log('           ENABLED SERVICES\n');
+  serviceList.forEach(service => {
+    console.log(`           ⦿ ${service}`);
+  })
+  console.log('========================================\n\n\n');
+
 
   serviceList.forEach(dir => {
     if (fs.readdirSync(`${__dirname}/../routes/`).indexOf(dir) !== -1){
       fs.readdirSync(`${__dirname}/../routes/${dir}/`).forEach(function (file) {
         var routeName = file.split(".")[0];
         var route = `../routes/${dir}/${file}`;
-        console.log('==================', routeName);
-
         app.use('/' + routeName, require(route));
       });
     };
