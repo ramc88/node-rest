@@ -7,6 +7,7 @@ const http = require('http');
 const KRequest = require('k-request');
 const helmet = require('helmet');
 const mongooseMorgan = require('k-mongoose-morgan');
+let dbManager;
 
 function init(moduleConfig) {
   const app = express();
@@ -16,7 +17,13 @@ function init(moduleConfig) {
   if (moduleConfig.workerService.enabled) {
     const jobWorker = require('../controllers/worker/worker');
     jobWorker.start();
-  }
+  };
+
+  if (moduleConfig.dbService.enabled) {
+    global.io = require('socket.io')(server);
+    dbManager = require('../controllers/db/dbManager').work();
+  };
+
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
 
@@ -57,12 +64,12 @@ function init(moduleConfig) {
 
   const serviceList = [];
   Object.keys(moduleConfig).forEach( val => { if (moduleConfig[val].enabled) serviceList.push(moduleConfig[val].dir)});
-  console.log('\n\n\n========================================');
-  console.log('           ENABLED SERVICES\n');
+  console.log('\x1b[35m%s\x1b[0m', '\n\n\n========================================');
+  console.log('\x1b[35m%s\x1b[0m','           ENABLED SERVICES\n');
   serviceList.forEach(service => {
-    console.log(`           ⦿ ${service}`);
+    console.log('\x1b[35m%s\x1b[0m',`           ⦿ ${service}`);
   })
-  console.log('========================================\n\n\n');
+  console.log('\x1b[35m%s\x1b[0m','========================================\n\n\n');
 
 
   serviceList.forEach(dir => {

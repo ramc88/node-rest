@@ -1,6 +1,6 @@
 {
     "workerService": {
-        "enabled": true,
+        "enabled": false,
         "dir": "worker"
     },
     "dbService": {
