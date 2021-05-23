@@ -1,7 +1,27 @@
 const axios = require('axios');
 const io = require("socket.io-client");
+const insertQueryTemplate = (values, executionId) => {
+    return `INSERT INTO facebook_api(
+        daily_outcomes_curve_spend, 
+        daily_outcomes_curve_reach, 
+        daily_outcomes_curve_impressions, 
+        daily_outcomes_curve_actions, 
+        estimate_dau, 
+        estimate_mau, 
+        estimate_ready, 
+        execution_id)
+VALUES (
+    ${values[0].daily_outcomes_curve[0].spend}, 
+    ${values[0].daily_outcomes_curve[0].reach}, 
+    ${values[0].daily_outcomes_curve[0].impressions}, 
+    ${values[0].daily_outcomes_curve[0].actions}, 
+    ${values[0].estimate_dau}, 
+    ${values[0].estimate_mau}, 
+    ${values[0].estimate_ready},
+    '${executionId}')`
+};
 
-const job = async (config, facebookSearchBase, socketConfig) => {
+const job = async (config, facebookSearchBase, socketConfig, executionId) => {
     // config must be stringified
     console.log('--------------JOB-----------------')
     if (!socketConfig || !socketConfig.server) {
@@ -25,7 +45,7 @@ const job = async (config, facebookSearchBase, socketConfig) => {
         try {
             const response = await axios(request);
             console.log('AXIOS RESPONSE:: ', response.status, response.data);
-            socket.emit('insertDb', response.data)
+            socket.emit('insertDb', insertQueryTemplate(response.data.data, executionId));
             return response.data;
         } catch (e) {
             console.log('AXIOS ERROR:: ', e);
@@ -35,4 +55,4 @@ const job = async (config, facebookSearchBase, socketConfig) => {
 };
 
 console.log('ARGV:: ', process.argv);
-job(process.argv[2], process.argv[3], JSON.parse(process.argv[4]));
+job(process.argv[2], process.argv[3], JSON.parse(process.argv[4]), process.argv[5]);

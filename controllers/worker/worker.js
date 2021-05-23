@@ -5,6 +5,8 @@ const pm2Manager = require('./pm2Manager');
 const socketConfig = {
   server: 'ws://localhost:4000/'
 }
+const currentFbBaseUrl = 'https://graph.facebook.com/v9.0';
+
 exports.start = async (app) => {
   try {
     console.log('starting worker', global.config.redis)
@@ -24,7 +26,10 @@ exports.start = async (app) => {
           const exeParams = {
             file: `${__dirname}/jobs/fbApi.js`,
             name: `Execution-${job.data._id}`,
-            args: [JSON.stringify(job.data.config), 'https://graph.facebook.com/v9.0', JSON.stringify(socketConfig)]
+            args: [JSON.stringify(job.data.config),
+              currentFbBaseUrl,
+              JSON.stringify(socketConfig),
+              job.data._id]
           };
           return await pm2Manager.createProcess(exeParams);
         }
