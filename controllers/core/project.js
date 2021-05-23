@@ -131,7 +131,13 @@ const runProject = async (id) => {
     try {
         let executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
         console.log('Executions: ', executions);
-        executions = executions.map((val) => { return bullInt.addToQueue('works', val, {jobId: val._id, repeat: { cron: val.recurrence, limit: 3 }, removeOnComplete: false, removeOnFail: false})});
+        executions = executions.map((val) => { 
+            return bullInt.addToQueue(
+                'works', 
+                val, 
+                {jobId: val._id, repeat: { cron: val.recurrence, limit: 3 }, removeOnComplete: false, removeOnFail: false}
+                )
+            });
         return {};
     } catch (e) {
         console.log('Error running project: ', e);
