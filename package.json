@@ -34,7 +34,8 @@
     "pug": "2.0.0-beta11",
     "raven": "^2.6.4",
     "request": "^2.88.2",
-    "socket.io": "^4.0.1"
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
     "mocha": "^5.1.1",
