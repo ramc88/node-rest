@@ -18,7 +18,7 @@ exports.start = async (app) => {
       if (job.attemptsMade === 2) {
         job.data.log = job.failedReason;
         job.data.processing_status = 2;
-        // console.log('JOB-->', job);
+
         await bullInt.addToQueue('works', job.data, { priority: 2 });
         await job.remove();
       } else {
