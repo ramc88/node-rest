@@ -23,6 +23,7 @@ create table facebook_api(
     estimate_mau INT NOT NULL,
     estimate_ready BOOL
     execution_id INT NOT NULL
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     PRIMARY KEY ( id )
 );
 CREATE UNIQUE INDEX EXECUTION_INDEX ON facebook_api (execution_id ASC)

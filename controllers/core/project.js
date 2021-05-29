@@ -1,7 +1,7 @@
 const Project = require('../../models/projects');
 const cronRegex = "^((((\d+,)+\d+|(\d+(\/|-|#)\d+)|\d+L?|\*(\/\d+)?|L(-\d+)?|\?|[A-Z]{3}(-[A-Z]{3})?) ?){5,7})$|(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)"
 const execCtrl = require('./execution');
-const bullInt = require('../../controllers/worker/bullIntegration');
+const bullInt = require('../../lib/bullIntegration');
 const mongoose = require('mongoose');
 const utils = require('../../lib/utils');
 

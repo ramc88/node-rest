@@ -45,7 +45,10 @@ const job = async (config, facebookSearchBase, socketConfig, executionId) => {
         try {
             const response = await axios(request);
             console.log('AXIOS RESPONSE:: ', response.status, response.data);
-            socket.emit('insertDb', insertQueryTemplate(response.data.data, executionId));
+            socket.emit('insertDb', {
+                query: insertQueryTemplate(response.data.data, executionId),
+                executionId,
+            });
             return response.data;
         } catch (e) {
             console.log('AXIOS ERROR:: ', e);

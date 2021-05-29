@@ -1,6 +1,6 @@
 const Arena = require('bull-arena');
 const Bull = require('bull');
-const bullQueues = require('./bullIntegration');
+const bullQueues = require('../../lib/bullIntegration');
 
 const allQueues = Object.keys(bullQueues.queuesList);
 

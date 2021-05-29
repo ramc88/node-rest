@@ -1,4 +1,4 @@
-const bullInt = require('./bullIntegration');
+const bullInt = require('../../lib/bullIntegration');
 const Queue = require('bull');
 // const fbApiJob = require('./jobs/fbApi');
 const pm2Manager = require('./pm2Manager');
@@ -11,6 +11,7 @@ exports.start = async (app) => {
   try {
     console.log('starting worker', global.config.redis)
     const jobs = new Queue('works', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}});
+    const deleteJobs = new Queue('deleteJobs', {redis: {port: global.config.redis.split(':')[1], host: global.config.redis.split(':')[0]}});
 
     jobs.process(global.config.batchSize, async (job) => {
       console.log('-----------PROCESSING JOB-----------', job.data);
@@ -36,6 +37,11 @@ exports.start = async (app) => {
       };
       return {}
     });
+
+    deleteJobs.process(1, async(job) => {
+      console.log('---------DELETE JOB-----------', job.data.id);
+      pm2Manager.deleteProcess(`Execution-${job.data.id}`);
+    })
   } catch (e) {
     console.log(e)
   }
