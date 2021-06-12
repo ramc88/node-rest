@@ -1,6 +1,7 @@
 const login = require('../lib/login');
 const User = require('../models/user');
 const countries = require('./upsertFacebookCatalogs/countries');
+const cities = require('./upsertFacebookCatalogs/cities');
 const expats = require('./upsertFacebookCatalogs/expats');
 
 function upsertMainUser() {
@@ -32,6 +33,7 @@ function upsertMainUser() {
 function init() { 
   upsertMainUser();
   countries.upsertCountries();
+  cities.upsertCities();
   expats.upsertExpats();
 }
 
