@@ -7,28 +7,36 @@ const http = require('http');
 const KRequest = require('k-request');
 const helmet = require('helmet');
 const mongooseMorgan = require('k-mongoose-morgan');
+let dbManager;
 
-function init() {
+function init(moduleConfig) {
   const app = express();
   const server = http.Server(app);
 
   // START WORKER
-  //const jobWorker = require('../controllers/worker');
-  //jobWorker.start(app);
+  if (moduleConfig.workerService.enabled) {
+    const jobWorker = require('../controllers/worker/worker');
+    jobWorker.start();
+  };
+
+  if (moduleConfig.dbService.enabled) {
+    global.io = require('socket.io')(server);
+    dbManager = require('../controllers/db/dbManager').work();
+  };
 
   // k-request
   global.krequest = new KRequest(process.env.MONGO || global.config.db.mongo.url, 'outgoing');
 
   // The request handler must be the first middleware on the app
   app.use(global.Raven.requestHandler());
-  
+
   var corsOptions = {
     methods: 'GET,PUT,POST,DELETE,OPTIONS',
     origin: '*',
     allowedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization'],
     exposedHeaders: ['api_key', 'api-key', 'Content-Type', 'Authorization']
   };
-  
+
   app.use(cors(corsOptions));
 
   app.use(compress());
@@ -48,23 +56,39 @@ function init() {
     }),
   );
 
-   // TODO middlewares
+  // TODO middlewares
   app.use(require('../middlewares/auth'));
 
-  app.use('/bullMonitor', require('../controllers/arenaConfig').arena);
+  if (moduleConfig.workerService.enabled)
+    app.use('/bullMonitor', require('../controllers/worker/arenaConfig').arena);
 
-  fs.readdirSync(`${__dirname}/../routes/`).forEach(function(file) {
-    var routeName = file.split(".")[0];
-    var route = '../routes/' + file;
-    app.use('/' + routeName, require(route));
-  });
+  const serviceList = [];
+  Object.keys(moduleConfig).forEach( val => { if (moduleConfig[val].enabled) serviceList.push(moduleConfig[val].dir)});
+  console.log('\x1b[35m%s\x1b[0m', '\n\n\n========================================');
+  console.log('\x1b[35m%s\x1b[0m','           ENABLED SERVICES\n');
+  serviceList.forEach(service => {
+    console.log('\x1b[35m%s\x1b[0m',`           ⦿ ${service}`);
+  })
+  console.log('\x1b[35m%s\x1b[0m','========================================\n\n\n');
 
+
+  serviceList.forEach(dir => {
+    if (fs.readdirSync(`${__dirname}/../routes/`).indexOf(dir) !== -1){
+      fs.readdirSync(`${__dirname}/../routes/${dir}/`).forEach(function (file) {
+        var routeName = file.split(".")[0];
+        var route = `../routes/${dir}/${file}`;
+        app.use('/' + routeName, require(route));
+      });
+    };
+  })
+  
   server.listen(process.env.PORT || 4000, (err) => {
     if (err) {
       throw err;
     }
     console.log(`listening on port ${process.env.PORT || 4000}`);
   });
+
 }
 
 module.exports = {

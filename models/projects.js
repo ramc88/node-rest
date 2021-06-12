@@ -17,7 +17,9 @@ const Project = new Schema({
       type: Schema.Types.String,
   },
   
-  config: {type: Object}, 
+  config: {type: Object},
+
+  jsonConfig: {type: Object},
   
   description: {
       type: Schema.Types.String,

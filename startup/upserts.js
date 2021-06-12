@@ -28,8 +28,6 @@ function upsertMainUser() {
     });
 }
 
-
-
 function init() { 
   upsertMainUser();
   countries.upsertCountries();

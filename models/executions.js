@@ -7,7 +7,13 @@ const Execution = new Schema({
       type: Schema.Types.String,
   },
   config: {
-    type: Schema.Types.String
+    type: Object
+  },
+  recurrence: {
+    type: Schema.Types.String,
+  },
+  type: {
+    type: Schema.Types.String,
   },
   projectId: {
     type: ObjectId, ref: 'projects'

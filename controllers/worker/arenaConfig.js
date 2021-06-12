@@ -1,6 +1,6 @@
 const Arena = require('bull-arena');
 const Bull = require('bull');
-const bullQueues = require('./bullIntegration');
+const bullQueues = require('../../lib/bullIntegration');
 
 const allQueues = Object.keys(bullQueues.queuesList);
 
@@ -9,7 +9,8 @@ const allQueuesConfig = allQueues.map((val) => {
         name: val,
         hostId: "demography",
         redis: {
-            url: global.config.redis,
+            host: global.config.redis.split(':')[0],
+            port: global.config.redis.split(':')[1]
         },
     };
 });
