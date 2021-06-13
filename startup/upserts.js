@@ -3,6 +3,8 @@ const User = require('../models/user');
 const countries = require('./upsertFacebookCatalogs/countries');
 const cities = require('./upsertFacebookCatalogs/cities');
 const expats = require('./upsertFacebookCatalogs/expats');
+const industries = require('./upsertFacebookCatalogs/industries');
+const life_events = require('./upsertFacebookCatalogs/life_events');
 
 function upsertMainUser() {
   const user = {
@@ -33,6 +35,8 @@ function init() {
   countries.upsertCountries();
   cities.upsertCities();
   expats.upsertExpats();
+  industries.upsertIndustries();
+  life_events.upsertLifeEvents()
 }
 
 module.exports = {

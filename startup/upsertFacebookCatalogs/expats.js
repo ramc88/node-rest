@@ -928,20 +928,6 @@ var expats = [
       "real_time_cluster": false
   },
   {
-      "id": "6026660740983",
-      "name": "Propietario de Galaxy S6",
-      "type": "behaviors",
-      "path": [
-          "Usuario de dispositivo móvil",
-          "Todos los dispositivos móviles por marca",
-          "Samsung",
-          "Propietario de Galaxy S6"
-      ],
-      "description": "Personas que probablemente tienen un dispositivo móvil Samsung Galaxy S6",
-      "audience_size": 4848450,
-      "real_time_cluster": false
-  },
-  {
       "id": "6027147160983",
       "name": "Vivieron en Malasia (anteriormente expatriados - Malasia)",
       "type": "behaviors",
