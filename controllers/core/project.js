@@ -98,10 +98,16 @@ const getAllByW = async (w) => {
 }
 
 const update = async (id, body) => {
+
+    const query = {
+        _id: id
+      };
+
     try {
-        return await Project.findOneAndUpdate(id, body, { new: true });
+        return await Project.findOneAndUpdate(query, body, { new: true });
     } catch (e) {
         console.log(e);
+
         return { error: e };
     }
 }
