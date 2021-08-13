@@ -5,7 +5,8 @@ const filesDir = 'csvFiles';
 const { uuid } = require('uuidv4');
 
 const fbApiStandarQuery = 'select * from facebook_api';
-const fbApiFilterIdQuery = (projectId) => `select * from facebook_api where project_id = '${projectId}'`;
+const fbApiFilterIdQuery = (projectId, startDate, endDate) => 
+    `select * from facebook_api where project_id = '${projectId}' ${startDate ? ` and ts >= '${startDate}'` : ''} ${endDate ? ` and ts <= '${endDate}'`: ''}`;
 
 const credentials = process.env.MYSQL ? JSON.parse(process.env.MYSQL) : undefined || global.config.db.mysql;
 
@@ -28,8 +29,8 @@ const exportReportByQuery = async (query, params) => {
     return `${fullPathDir}/${filename}.csv`;
 };
 
-const exportReportFbApi = async (projectId) => {
-    return exportReportByQuery(fbApiFilterIdQuery(projectId));
+const exportReportFbApi = async (projectId, startDate, endDate) => {
+    return exportReportByQuery(fbApiFilterIdQuery(projectId, startDate, endDate));
 };
 
 const deleteReport = (fileName) => {

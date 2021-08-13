@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 
 router.get("/fbApi/:projectId", async (req, res) => {
     try {
-      const fileName = await ctrl.exportReportFbApi(req.params.projectId);
+      const fileName = await ctrl.exportReportFbApi(req.params.projectId, req.query.startDate, req.query.endDate);
   
       res.download(fileName, fileName.split('/')[fileName.split('/').length], (err) => {
           if (err) {
