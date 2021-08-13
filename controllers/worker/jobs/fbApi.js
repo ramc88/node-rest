@@ -1,6 +1,6 @@
 const axios = require('axios');
 const io = require("socket.io-client");
-const insertQueryTemplate = (values, executionId) => {
+const insertQueryTemplate = (values, executionId, projectId) => {
     return `INSERT INTO facebook_api(
         daily_outcomes_curve_spend, 
         daily_outcomes_curve_reach, 
@@ -9,7 +9,8 @@ const insertQueryTemplate = (values, executionId) => {
         estimate_dau, 
         estimate_mau, 
         estimate_ready, 
-        execution_id)
+        execution_id,
+        project_id)
 VALUES (
     ${values[0].daily_outcomes_curve[0].spend}, 
     ${values[0].daily_outcomes_curve[0].reach}, 
@@ -18,10 +19,11 @@ VALUES (
     ${values[0].estimate_dau}, 
     ${values[0].estimate_mau}, 
     ${values[0].estimate_ready},
-    '${executionId}')`
+    '${executionId}',
+    '${projectId}')`
 };
 
-const job = async (config, facebookSearchBase, socketConfig, executionId) => {
+const job = async (config, facebookSearchBase, socketConfig, executionId, projectId) => {
     // config must be stringified
     console.log('--------------JOB-----------------')
     if (!socketConfig || !socketConfig.server) {
@@ -46,8 +48,9 @@ const job = async (config, facebookSearchBase, socketConfig, executionId) => {
             const response = await axios(request);
             console.log('AXIOS RESPONSE:: ', response.status, response.data);
             socket.emit('insertDb', {
-                query: insertQueryTemplate(response.data.data, executionId),
+                query: insertQueryTemplate(response.data.data, executionId, projectId),
                 executionId,
+                projectId,
             });
             return response.data;
         } catch (e) {
@@ -58,4 +61,5 @@ const job = async (config, facebookSearchBase, socketConfig, executionId) => {
 };
 
 console.log('ARGV:: ', process.argv);
-job(process.argv[2], process.argv[3], JSON.parse(process.argv[4]), process.argv[5]);
+// [config stringified, currentFbBaseURl, socketConfig stringified, executionId, projectId]
+job(process.argv[2], process.argv[3], JSON.parse(process.argv[4]), process.argv[5], process.argv[6]);

@@ -27,10 +27,12 @@ exports.start = async (app) => {
           const exeParams = {
             file: `${__dirname}/jobs/fbApi.js`,
             name: `Execution-${job.data._id}`,
+            // args: [config stringified, currentFbBaseURl, socketConfig stringified, executionId, projectId]
             args: [JSON.stringify(job.data.config),
               currentFbBaseUrl,
               JSON.stringify(socketConfig),
-              job.data._id]
+              job.data._id,
+              job.data.projectId]
           };
           return await pm2Manager.createProcess(exeParams);
         }

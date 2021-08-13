@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
             message: "Could not download the file. " + err,
           });
         }
+        ctrl.deleteReport(fileName);
       });
   } catch (e) {
     console.log(e);
@@ -18,9 +19,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/fbApi", async (req, res) => {
+router.get("/fbApi/:projectId", async (req, res) => {
     try {
-      const fileName = await ctrl.exportReportFbApi();
+      const fileName = await ctrl.exportReportFbApi(req.params.projectId);
   
       res.download(fileName, fileName.split('/')[fileName.split('/').length], (err) => {
           if (err) {
@@ -28,6 +29,7 @@ router.get("/fbApi", async (req, res) => {
               message: "Could not download the file. " + err,
             });
           }
+          ctrl.deleteReport(fileName);
         });
     } catch (e) {
       console.log(e);

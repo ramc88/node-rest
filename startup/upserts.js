@@ -27,10 +27,19 @@ function upsertMainUser() {
     });
 }
 
-function init() { 
+const loadJobs = async() => {
+  const projectCtrl = require('../controllers/core/project')
+  const allIds = (await projectCtrl.getAllByW({status: 'Active'})).map((val => val._id));
+  allIds.forEach((id) => {
+    projectCtrl.runProject(id);
+  });
+};
+
+const init = async() => { 
   upsertMainUser();
   countries.upsertCountries();
   expats.upsertExpats();
+  loadJobs();
 }
 
 module.exports = {

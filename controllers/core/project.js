@@ -15,7 +15,6 @@ const create = async (body) => {
         if (!body.config) return { error: 'field config is missing' };
 
         const combinations = utils.combinations(Object.values(body.config.config), Object.keys(body.config.config));
-
         const jsonConfig = combinations.reduce((acc, combination) => {
             const homeType = combination.homes.country ? 'countries' : 'cities';
             const obj = { 
@@ -53,6 +52,8 @@ const create = async (body) => {
         const newPr = new Project(body);
         const result = await newPr.save();
         result.jsonConfig.map(async (value) => await execCtrl.create({status: 'initial', recurrence: result.recurrence, config: value, projectId: mongoose.Types.ObjectId(result._id), type: result.type}));
+        await createExecutions(result._id);
+        await runProject(id);
         return result;
     } catch (e) {
         console.log('Error creating Project: ', e);
@@ -129,15 +130,26 @@ const createExecutions = async (id) => {
 
 const runProject = async (id) => {
     try {
+        const project = await Project.findById(id);
         let executions = await execCtrl.getAllByW({projectId: mongoose.Types.ObjectId(id)});
         console.log('Executions: ', executions);
+        console.log('Recurrence: ', project.recurrence);
+        if (!project.recurrence) project.recurrence = '0 5 * * *';
         executions = executions.map((val) => { 
             return bullInt.addToQueue(
                 'works', 
                 val, 
-                {jobId: val._id, repeat: { cron: val.recurrence, limit: 3 }, removeOnComplete: false, removeOnFail: false}
-                )
-            });
+                { 
+                    jobId: val._id,
+                    repeat: { 
+                        cron: project.recurrence, 
+                        limit: 3 
+                    }, 
+                    removeOnComplete: false, 
+                    removeOnFail: false 
+                }
+            )
+        });
         return {};
     } catch (e) {
         console.log('Error running project: ', e);

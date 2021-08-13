@@ -15,6 +15,7 @@
 
 create table facebook_api(
     id INT NOT NULL AUTO_INCREMENT,
+    project_id VARCHAR(250) NOT NULL,
     daily_outcomes_curve_spend INT NOT NULL,
     daily_outcomes_curve_reach INT NOT NULL,
     daily_outcomes_curve_impressions INT NOT NULL,
