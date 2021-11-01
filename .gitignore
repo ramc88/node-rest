@@ -63,3 +63,4 @@ typings/
 .gitignore
 .npmrc
 csvFiles/*
+.DS_Store

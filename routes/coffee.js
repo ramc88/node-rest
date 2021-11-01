@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const ctrl = require('../../controllers/core/notification');
+const ctrl = require('../controllers/coffee');
 
 
 router.post('/', async (req, res) => {
   try {
     const item = await ctrl.create(req.body);
+    console.log('itemL ', item)
     res.send(item);
   } catch (e) {
     console.log(e);
@@ -12,9 +13,19 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/source', async (req, res) => {
   try {
-    const item = await ctrl.getById(req.params.id);
+    const items = await ctrl.getFromSource();
+    res.send(items);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+
+router.get('/:title', async (req, res) => {
+  try {
+    const item = await ctrl.getByTitle(req.params.title);
     res.send(item);
   } catch (e) {
     console.log(e);
@@ -31,27 +42,6 @@ router.get('/', async (req, res) => {
       items = await ctrl.getAll();
     }
     res.send(items);
-  } catch (e) {
-    console.log(e);
-    res.status(400).send(e);
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    const items = await ctrl.deleteById(req.params.id);
-    res.send(items);
-  } catch (e) {
-    console.log(e);
-    res.status(400).send(e);
-  }
-});
-
-router.put('/:id', async (req, res) => {
-  try {
-    const item = await ctrl.update(req.params.id, req.body);
-    if (item === 'Not found') res.status(404);
-    res.send(item);
   } catch (e) {
     console.log(e);
     res.status(400).send(e);
